@@ -28,7 +28,7 @@ class ListSourceAdapter(private val context: Context, private val webSite: WebSi
 
     override fun onBindViewHolder(holder: ListSourceViewHolder, position: Int) {
 
-        holder!!.mSourceTitle.text = webSite.sources!![position].name
+        holder.mSourceTitle.text = webSite.sources!![position].name
 
         holder.setItemClickListener(object : ItemClickListener {
 
