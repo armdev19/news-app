@@ -1,15 +1,15 @@
-package com.infernal93.newsapp
+package com.infernal93.news.view.activities
 
 import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Adapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.infernal93.newsapp.Adapter.ListNewsAdapter
-import com.infernal93.newsapp.Common.Common
-import com.infernal93.newsapp.Interface.NewsService
-import com.infernal93.newsapp.Model.News
+import com.infernal93.news.R
+import com.infernal93.news.view.adapter.ListNewsAdapter
+import com.infernal93.news.common.Common
+import com.infernal93.news.view.interfaces.NewsService
+import com.infernal93.news.model.News
 import com.squareup.picasso.Picasso
 import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_list_news.*
@@ -18,14 +18,14 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ListNewsActivity : AppCompatActivity() {
+    private val TAG = "ListNewsActivity"
 
-    var source = ""
-    var webHotUrl: String? = ""
+    var mSource = ""
+    var mWebHotUrl: String? = ""
 
-    lateinit var dialog: AlertDialog
+    lateinit var mDialog: AlertDialog
     lateinit var mService: NewsService
-    lateinit var adapter: ListNewsAdapter
-
+    lateinit var mAdapter: ListNewsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +34,14 @@ class ListNewsActivity : AppCompatActivity() {
         // init View
         mService = Common.newsService
 
-        dialog = SpotsDialog(this)
+        mDialog = SpotsDialog(this)
 
-        swipe_to_refresh_news.setOnRefreshListener { loadNews(source, true) }
+        swipe_to_refresh_news.setOnRefreshListener { loadNews(mSource, true) }
 
         diagonal_layout.setOnClickListener {
 
             val detail = Intent(baseContext, NewsDetailActivity::class.java)
-            detail.putExtra("webURL", webHotUrl)
+            detail.putExtra("webURL", mWebHotUrl)
             startActivity(detail)
         }
 
@@ -50,11 +50,11 @@ class ListNewsActivity : AppCompatActivity() {
 
         if (intent != null) {
 
-            source = intent.getStringExtra("source")
+            mSource = intent.getStringExtra("source")
 
-            if (!source.isEmpty())
+            if (!mSource.isEmpty())
 
-                loadNews(source, false)
+                loadNews(mSource, false)
         }
     }
 
@@ -62,7 +62,7 @@ class ListNewsActivity : AppCompatActivity() {
 
         if (isRefreshed) {
 
-            dialog.show()
+            mDialog.show()
             mService.getNewsFromSource(Common.getNewsAPI(source!!))
                 .enqueue(object : Callback<News>{
                     override fun onFailure(call: Call<News>, t: Throwable) {
@@ -71,7 +71,7 @@ class ListNewsActivity : AppCompatActivity() {
 
                     override fun onResponse(call: Call<News>, response: Response<News>) {
 
-                        dialog.dismiss()
+                        mDialog.dismiss()
 
                         // Get first article to hot news
                         Picasso.with(baseContext)
@@ -81,18 +81,17 @@ class ListNewsActivity : AppCompatActivity() {
                         top_title.text = response.body()!!.articles!![0].title
                         top_author.text = response.body()!!.articles!![0].author
 
-                        webHotUrl = response.body()!!.articles!![0].url
+                        mWebHotUrl = response.body()!!.articles!![0].url
 
                         // Load all remain articles
                         val removeFirstItem = response.body()!!.articles
                         // Because we get first item to hot new, so we need remove it
                         removeFirstItem!!.removeAt(0)
 
-                        adapter = ListNewsAdapter(removeFirstItem!!, baseContext)
-                        adapter.notifyDataSetChanged()
-                        list_news.adapter = adapter
+                        mAdapter = ListNewsAdapter(removeFirstItem!!, baseContext)
+                        mAdapter.notifyDataSetChanged()
+                        list_news.adapter = mAdapter
                     }
-
                 })
         }
 
@@ -117,18 +116,17 @@ class ListNewsActivity : AppCompatActivity() {
                         top_title.text = response.body()!!.articles!![0].title
                         top_author.text = response.body()!!.articles!![0].author
 
-                        webHotUrl = response.body()!!.articles!![0].url
+                        mWebHotUrl = response.body()!!.articles!![0].url
 
                         // Load all remain articles
                         val removeFirstItem = response.body()!!.articles
                         // Because we get first item to hot new, so we need remove it
                         removeFirstItem!!.removeAt(0)
 
-                        adapter = ListNewsAdapter(removeFirstItem!!, baseContext)
-                        adapter.notifyDataSetChanged()
-                        list_news.adapter = adapter
+                        mAdapter = ListNewsAdapter(removeFirstItem!!, baseContext)
+                        mAdapter.notifyDataSetChanged()
+                        list_news.adapter = mAdapter
                     }
-
                 })
         }
     }

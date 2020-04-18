@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">News App</string>
+    <string name="author_hint">Author</string>
+    <string name="title_hint">Title</string>
+    <string name="item_icon_desc">Item icon</string>
 </resources>

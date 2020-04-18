@@ -1,4 +1,4 @@
-package com.infernal93.newsapp.Adapter
+package com.infernal93.news.view.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -6,15 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.infernal93.newsapp.Common.ISO8601Parser
-import com.infernal93.newsapp.Interface.ItemClickListener
-import com.infernal93.newsapp.Model.Article
-import com.infernal93.newsapp.NewsDetailActivity
-import com.infernal93.newsapp.R
+import com.infernal93.news.common.ISO8601Parser
+import com.infernal93.news.view.interfaces.ItemClickListener
+import com.infernal93.news.model.Article
+import com.infernal93.news.view.activities.NewsDetailActivity
+import com.infernal93.news.R
 import com.squareup.picasso.Picasso
 import java.text.ParseException
 import java.util.*
-
 
 class ListNewsAdapter (val articleList: MutableList<Article>, private val context: Context) : RecyclerView.Adapter<ListNewsViewHolder>(){
 
@@ -36,14 +35,14 @@ class ListNewsAdapter (val articleList: MutableList<Article>, private val contex
         // Load Image
         Picasso.with(context)
             .load(articleList[position].urlToImage)
-            .into(holder.article_image)
+            .into(holder.mArticleImage)
 
         if (articleList[position].title!!.length > 65) {
 
-            holder.article_title.text = articleList[position].title!!.substring(0, 65) + "..."
+            holder.mArticleTitle.text = articleList[position].title!!.substring(0, 65) + "..."
         } else {
 
-            holder.article_title.text = articleList[position].title!!
+            holder.mArticleTitle.text = articleList[position].title!!
         }
 
         if (articleList[position].publishedAt != null) {
@@ -58,7 +57,7 @@ class ListNewsAdapter (val articleList: MutableList<Article>, private val contex
                 ex.printStackTrace()
             }
 
-            holder.article_time.setReferenceTime(date!!.time)
+            holder.mArticleTime.setReferenceTime(date!!.time)
         }
 
         // Set Event Click
@@ -70,12 +69,6 @@ class ListNewsAdapter (val articleList: MutableList<Article>, private val contex
                 detail.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(detail)
             }
-
         })
-
-
-
     }
-
-
 }

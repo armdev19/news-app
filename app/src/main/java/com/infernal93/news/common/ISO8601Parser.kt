@@ -1,11 +1,13 @@
-package com.infernal93.newsapp.Common
+package com.infernal93.news.common
 
+import android.annotation.SuppressLint
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
 object ISO8601Parser {
 
+    @SuppressLint("SimpleDateFormat")
     fun parse(params: String): Date {
 
         var input = params
@@ -28,6 +30,7 @@ object ISO8601Parser {
         return df.parse(input)
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun toString(date: Date) : String {
 
         val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz")

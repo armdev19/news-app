@@ -1,26 +1,27 @@
-package com.infernal93.newsapp
+package com.infernal93.news.view.activities
 
 import android.app.AlertDialog
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.infernal93.news.R
 import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_news_detail.*
 
 
 class NewsDetailActivity : AppCompatActivity() {
+    private val TAG = "NewsDetailActivity"
 
-    lateinit var alertDialog: AlertDialog
+    lateinit var mAlertDialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news_detail)
 
-        alertDialog = SpotsDialog(this)
-        alertDialog.show()
+        mAlertDialog = SpotsDialog(this)
+        mAlertDialog.show()
 
         //WebView
         webView.settings.javaScriptEnabled = true
@@ -29,7 +30,7 @@ class NewsDetailActivity : AppCompatActivity() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
 
-                alertDialog.dismiss()
+                mAlertDialog.dismiss()
             }
 
 

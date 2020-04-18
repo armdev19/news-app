@@ -1,18 +1,20 @@
-package com.infernal93.newsapp.Adapter
+package com.infernal93.news.view.adapter
 
 import android.view.View
-import androidx.appcompat.view.menu.ActionMenuItemView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.infernal93.newsapp.Interface.ItemClickListener
+import com.github.curioustechizen.ago.RelativeTimeTextView
+import com.infernal93.news.view.interfaces.ItemClickListener
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.news_layout.view.*
 
 class ListNewsViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) , View.OnClickListener {
 
     private lateinit var itemClickListener: ItemClickListener
 
-    var article_title = itemView.article_title
-    var article_time = itemView.article_time
-    var article_image = itemView.article_image
+    var mArticleTitle: TextView = itemView.article_title
+    var mArticleTime: RelativeTimeTextView = itemView.article_time
+    var mArticleImage: CircleImageView = itemView.article_image
 
     init {
 
@@ -28,6 +30,4 @@ class ListNewsViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) , 
 
         itemClickListener.onClick(v, adapterPosition)
     }
-
-
 }

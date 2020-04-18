@@ -1,7 +1,7 @@
-package com.infernal93.newsapp.Interface
+package com.infernal93.news.view.interfaces
 
-import com.infernal93.newsapp.Model.News
-import com.infernal93.newsapp.Model.WebSite
+import com.infernal93.news.model.News
+import com.infernal93.news.model.WebSite
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Url

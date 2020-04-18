@@ -1,30 +1,29 @@
-package com.infernal93.newsapp
+package com.infernal93.news.view.activities
 
 import android.app.AlertDialog
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.infernal93.newsapp.Adapter.ListSourceAdapter
-import com.infernal93.newsapp.Common.Common
-import com.infernal93.newsapp.Interface.NewsService
-import com.infernal93.newsapp.Model.WebSite
+import com.infernal93.news.R
+import com.infernal93.news.view.adapter.ListSourceAdapter
+import com.infernal93.news.common.Common
+import com.infernal93.news.view.interfaces.NewsService
+import com.infernal93.news.model.WebSite
 import dmax.dialog.SpotsDialog
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Response
-import javax.security.auth.callback.Callback
 
 class MainActivity : AppCompatActivity() {
+    private val TAG = "MainActivity"
 
-    lateinit var layoutManager: LinearLayoutManager
-    lateinit var mService: NewsService
-    lateinit var adapter: ListSourceAdapter
-    lateinit var dialog: AlertDialog
+    lateinit var mLayoutManager: LinearLayoutManager
+    private lateinit var mService: NewsService
+    lateinit var mAdapter: ListSourceAdapter
+    lateinit var mDialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,33 +42,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         recycler_view_source_news.setHasFixedSize(true)
-        layoutManager = LinearLayoutManager(this)
-        recycler_view_source_news.layoutManager = layoutManager
+        mLayoutManager = LinearLayoutManager(this)
+        recycler_view_source_news.layoutManager = mLayoutManager
 
-        dialog = SpotsDialog(this)
-
+        mDialog = SpotsDialog(this)
         loadWebSiteSource(false)
-
-
     }
-
 
     private fun loadWebSiteSource(isRefresh: Boolean) {
 
         if (!isRefresh) {
-
             val cache = Paper.book().read<String>("cache")
             if (cache != null && !cache.isBlank() && cache != "null") {
-
                 // Read cache
                 val webSite = Gson().fromJson<WebSite>(cache, WebSite::class.java)
-                adapter = ListSourceAdapter(baseContext, webSite)
-                adapter.notifyDataSetChanged()
-                recycler_view_source_news.adapter = adapter
+                mAdapter = ListSourceAdapter(baseContext, webSite)
+                mAdapter.notifyDataSetChanged()
+                recycler_view_source_news.adapter = mAdapter
             } else {
-
                 // Load website and write cache
-                dialog.show()
+                mDialog.show()
                 // Fetch new data
                 mService.sources.enqueue(object : retrofit2.Callback<WebSite> {
 
@@ -78,14 +70,14 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onResponse(call: Call<WebSite>?, response: Response<WebSite>?) {
-                        adapter = ListSourceAdapter(baseContext, response!!.body()!!)
-                        adapter.notifyDataSetChanged()
-                        recycler_view_source_news.adapter = adapter
+                        mAdapter = ListSourceAdapter(baseContext, response!!.body()!!)
+                        mAdapter.notifyDataSetChanged()
+                        recycler_view_source_news.adapter = mAdapter
 
                         // Save to cache
                         Paper.book().write("cache", Gson().toJson(response!!.body()!!))
 
-                        dialog.dismiss()
+                        mDialog.dismiss()
                     }
                 })
             }
@@ -102,17 +94,14 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call<WebSite>?, response: Response<WebSite>?) {
-                    adapter = ListSourceAdapter(baseContext, response!!.body()!!)
-                    adapter.notifyDataSetChanged()
-                    recycler_view_source_news.adapter = adapter
-
+                    mAdapter = ListSourceAdapter(baseContext, response!!.body()!!)
+                    mAdapter.notifyDataSetChanged()
+                    recycler_view_source_news.adapter = mAdapter
                     // Save to cache
-                    Paper.book().write("cache", Gson().toJson(response!!.body()!!))
-
+                    Paper.book().write("cache", Gson().toJson(response.body()!!))
                     swipe_to_refresh.isRefreshing = false
                 }
             })
         }
     }
-
 }

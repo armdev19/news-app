@@ -1,18 +1,15 @@
-package com.infernal93.newsapp.Adapter
+package com.infernal93.news.view.adapter
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.infernal93.newsapp.Interface.ItemClickListener
-import com.infernal93.newsapp.ListNewsActivity
-import com.infernal93.newsapp.MainActivity
-import com.infernal93.newsapp.Model.WebSite
-import com.infernal93.newsapp.R
-import kotlinx.android.synthetic.main.source_news_layout.view.*
+import com.infernal93.news.view.interfaces.ItemClickListener
+import com.infernal93.news.view.activities.ListNewsActivity
+import com.infernal93.news.model.WebSite
+import com.infernal93.news.R
 
 class ListSourceAdapter(private val context: Context, private val webSite: WebSite) : RecyclerView.Adapter<ListSourceViewHolder>() {
 
@@ -31,7 +28,7 @@ class ListSourceAdapter(private val context: Context, private val webSite: WebSi
 
     override fun onBindViewHolder(holder: ListSourceViewHolder, position: Int) {
 
-        holder!!.source_title.text = webSite.sources!![position].name
+        holder!!.mSourceTitle.text = webSite.sources!![position].name
 
         holder.setItemClickListener(object : ItemClickListener {
 
@@ -41,11 +38,7 @@ class ListSourceAdapter(private val context: Context, private val webSite: WebSi
                 intent.putExtra("source", webSite.sources!![position].id)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
-
-               // Toast.makeText(context, "Will be implement in next tutorial", Toast.LENGTH_LONG).show()
             }
         })
     }
-
-
 }

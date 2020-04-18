@@ -1,4 +1,4 @@
-package com.infernal93.newsapp.Interface
+package com.infernal93.news.view.interfaces
 
 import android.view.View
 

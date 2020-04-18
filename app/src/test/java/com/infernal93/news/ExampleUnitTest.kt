@@ -1,4 +1,4 @@
-package com.infernal93.newsapp
+package com.infernal93.news
 
 import org.junit.Test
 

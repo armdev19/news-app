@@ -1,4 +1,4 @@
-package com.infernal93.newsapp.Model
+package com.infernal93.news.model
 
 class Article {
 
